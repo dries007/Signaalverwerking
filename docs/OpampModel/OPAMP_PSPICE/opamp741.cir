@@ -1,0 +1,21 @@
+*
+* vcvs opamp model (LM741)
+*
+* Adc   = 200000  (amplification at DC)
+* fu    = 1 MHz   (unity gain frequency)
+* f-3dB = 5 Hz = fu/Adc
+* Rin   = 2 MOhm  (input impedance) 
+* Rout  = 75 Ohm  (output impedance)
+
+* CONNECTIONS:    NON-INVERTING INPUT
+*                 | INVERTING INPUT
+*                 | | OUTPUT
+*                 | | |
+.SUBCKT opamp741  1 2 3
+E1    10  0    1 2   200000
+E2    30  0   20 0   1
+R1    10 20  20KOHM
+C1    20  0  159.2NFARAD
+ROUT  30  3  75OHM
+RIN    1  0  2MEGOHM
+.ENDS

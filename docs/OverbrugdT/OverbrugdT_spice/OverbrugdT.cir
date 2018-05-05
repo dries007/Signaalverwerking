@@ -1,0 +1,51 @@
+*----------------------------
+* Bridged T-network         -
+*                           -
+* Author: Van Landeghem D.  -
+*         Meel J.           -
+* Date: 28 april 2010       -
+*----------------------------
+*
+*--------- MODELS for passive components ---------
+.model rmod  res(r = 1k  DEV/GAUSS  5%)
+.model cmod  cap(c = 1n  DEV/GAUSS 20%)
+*--------- NETLISTS ------------------------------
+*--- netlist bridged T-network - H(fn) = 1/100 ---
+.subckt tnetwork_h100  1  100   3
+r1   1   2 rmod  11.3
+r2   2   3 rmod  11.3
+c1   1   3 cmod  1
+c2   2 100 cmod  198
+.ends
+*--- netlist bridged T-network - H(fn) = 1/20 ----
+.subckt tnetwork_h20  1  100   3
+r1   1   2 rmod  25.8
+r2   2   3 rmod  25.8
+c1   1   3 cmod  1
+c2   2 100 cmod  38
+.ends
+*
+*--------- testbench BODE & ZIN (H(fn) = 1/100) --
+*AC   11  0  AC 1V
+*AC   11  0  13 tnetwork_h20
+*--------- testbench ZOUT (H(fn) = 1/100) --------
+VIMP  21  0  0V
+IIMP   0 23  AC 1A
+XIMP  21  0  23 tnetwork_h100
+*--------- testbench STAP (H(fn) = 1/100) --------
+*TRAN 31  0  PWL(0 0V 0.5ms 0V 0.501ms 1V 6ms 1V)
+*TRAN 31  0  33 tnetwork_h100
+*--------- testbench BODE & ZIN (H(fn) = 1/20) ---
+*VACh20 41  0  AC 1V
+*XACh20 41  0  43 tnetwork_h20
+*
+*--------- ANALYSIS ------------------------------
+.AC DEC 100 10HZ 100kHZ
+*MC 10 AC V(13) YMAX LIST OUTPUT ALL
+*TRAN 0.01ms 6ms
+*
+*--------- RESULTS -------------------------------
+.PROBE
+* out tnetwork_h100: V(13)
+* out tnetwork_h20:  V(43)
+.END

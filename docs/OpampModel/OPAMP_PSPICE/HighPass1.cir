@@ -1,0 +1,49 @@
+*--------------------------------------
+* HIGH-PASS ACTIVE FILTER (1st order) -
+*                                     -
+* Author: Meel J.                     -
+* Date: 6 may 2010                    -
+*--------------------------------------
+*
+*--------- NETLISTS ------------------------------*
+*
+*-- opamp TL084 ----------------------------------*
+.inc TL084.cir
+Vcc 10 0  DC  15V
+Vee 20 0  DC -15V
+*       i+ i- V+ V-  O
+XTL084   1  0 10 20  31 TL084
+*-- HIGH-PASS ACTIVE FILTER build with TL084 -----*
+*       i+ i- V+ V-  O
+XATL084 22 42 10 20 32 TL084
+RF2 42 32 90KOHM
+R12 42  0 1KOHM 
+CH2  1 22 159NFARAD
+RH2 22  0 10KOHM 
+*-------------------------------------------------*
+*-- opamp TL084 VCVS------------------------------*
+.inc opamp84.cir
+*       i+ i-  O
+Xoa84   1  0  33 opamp84
+Rload   33 0  1MEGOhm
+*-- HIGH-PASS ACTIVE FILTER build with TL084 VCVS-*
+*       i+ i-  O
+XAoa84  24 44 34 opamp84
+RF4 44 34 90KOHM
+R14 44  0 1KOHM 
+CH4  1 24 159NFARAD
+RH4 24  0 10KOHM 
+*-------------------------------------------------*
+*
+*--------- INPUT SOURCE --------------------------*
+*
+Vin    1 0 AC 1V
+*
+*--------- ANALYSIS ------------------------------*
+*
+.AC DEC 100 1HZ 1GHZ
+*
+*--------- RESULTS -------------------------------*
+*
+.PROBE
+.END
