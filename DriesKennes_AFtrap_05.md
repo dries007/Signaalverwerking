@@ -4,8 +4,6 @@ author: Dries Kennes (R0486630)
 date: \today{}
 papersize: A4
 geometry: margin=2cm
-extensions:
-- raw_html
 ---
 # Opdracht 2A: Analyse v.e. actieve filtertrap
 
