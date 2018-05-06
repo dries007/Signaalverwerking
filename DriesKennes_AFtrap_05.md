@@ -4,6 +4,8 @@ author: Dries Kennes (R0486630)
 date: \today{}
 papersize: A4
 geometry: margin=2cm
+header-includes:
+  - \usepackage{pgfplots}
 ---
 # Opdracht 2A: Analyse v.e. actieve filtertrap
 
@@ -18,6 +20,38 @@ geometry: margin=2cm
   + $Q_p = 4$
 
 ## Analyse
+
+### Berekening $f_n$ uit asymptotisch Bodediagram
+
+\begin{tikzpicture}
+\begin{axis}[
+width=\textwidth,
+height=\axisdefaultheight,
+title={Asymptotisch Bodediagram},
+xlabel={Frequentie [Hz]},
+ylabel={Versterking [dB]},
+xmode=log,
+ymajorgrids=true,
+xmajorgrids=true, 
+xminorgrids=true,
+grid style=dashed,
+xmin=100, xmax=10000,
+ymin=-40, ymax=10,
+ytick={0,6,-34},
+]
+
+\addplot
+table {
+100 6
+1000 6
+10000 -34
+};
+\node[color=blue] at (axis cs: 2000,-15) {$-40dB/dec$};
+
+\end{axis}
+\end{tikzpicture}
+
+De lijn van $-40dB/dec$, het beginpunt bij $10 kHz,-34dB$, en het filtertype (LDF) laat toe $f_n$ te berekenen. $f_n = 1kHz$.
 
 ### 1. Bepaal de DC- en HF-weergave
 
@@ -92,13 +126,29 @@ Het resultaat: $H(s) = \frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{
 
 ### 3. Vergelijk transfer functie met de algemene
 
-Geen teller, dus geen zeros, enkel polen.
-
 Algemene vorm LDL filter: $H(s) = K\frac{1}{(\frac{s}{\omega_n})^2+\frac{1}{Q}\cdot(\frac{s}{\omega_n})+1}$
 
 + $K=\frac{R_4}{R_3+R_4} \cdot \frac{R_5+R_6}{R_6}$
 + $\frac{1}{\omega_n^2} = \frac{C_1C_2R_1R_2R_5}{R_6}$
 + $\frac{1}{Q\omega_n}=C_2R_2 \cdot \frac{R_3}{R_4+R_3} \cdot \frac{R_5+R_6}{R_6}$
+
+### 3. Pole-zero plot
+
++ Geen zeros
++ Wel polen, namelijk $s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1 = 0$
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Kies:
 
