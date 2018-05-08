@@ -44,3 +44,23 @@ Algemene vorm LDF: $H(\omega) = K\frac{1}{(\frac{s}{\omega_n})^2+\frac{1}{Q_p}\c
 
 ### Matlab
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
