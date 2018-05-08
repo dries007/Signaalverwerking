@@ -6,6 +6,7 @@ papersize: A4
 geometry: margin=2cm
 header-includes:
   - \usepackage{pgfplots}
+  - \usepgfplotslibrary{polar}
 ---
 # Opdracht 2A: Analyse v.e. actieve filtertrap
 
@@ -104,6 +105,18 @@ Algemene vorm LDL filter: $H(s) = K\frac{1}{(\frac{s}{\omega_n})^2+\frac{1}{Q}\c
 
 + Geen zeros
 + Wel polen, namelijk $s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1 = 0$
+
+\begin{tikzpicture}
+\begin{polaraxis}[
+title={Pole-Zero Plot},
+ytick={1},
+yticklabels={},
+every outer x axis line/.append style={transparent},
+every outer y axis line/.append style={transparent},
+]
+\node[color=blue] at (0,0) {$-40dB/dec$};
+\end{polaraxis}
+\end{tikzpicture}
 
 ToDo: Grafiek
 
