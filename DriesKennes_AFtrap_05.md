@@ -1,7 +1,7 @@
 ---
 title: Labo Signaalverwerking
 author: Dries Kennes (R0486630)
-date: \today{}
+date: \today
 papersize: A4
 geometry: margin=2cm
 header-includes:
@@ -20,38 +20,6 @@ header-includes:
   + $Q_p = 4$
 
 ## Analyse
-
-### Berekening $f_n$ uit asymptotisch Bodediagram
-
-\begin{tikzpicture}
-\begin{axis}[
-width=\textwidth,
-height=\axisdefaultheight,
-title={Asymptotisch Bodediagram},
-xlabel={Frequentie [Hz]},
-ylabel={Versterking [dB]},
-xmode=log,
-ymajorgrids=true,
-xmajorgrids=true, 
-xminorgrids=true,
-grid style=dashed,
-xmin=100, xmax=10000,
-ymin=-40, ymax=10,
-ytick={0,6,-34},
-]
-
-\addplot
-table {
-100 6
-1000 6
-10000 -34
-};
-\node[color=blue] at (axis cs: 2000,-15) {$-40dB/dec$};
-
-\end{axis}
-\end{tikzpicture}
-
-De lijn van $-40dB/dec$, het beginpunt bij $10 kHz,-34dB$, en het filtertype (LDF) laat toe $f_n$ te berekenen. $f_n = 1kHz$.
 
 ### 1. Bepaal de DC- en HF-weergave
 
@@ -122,7 +90,7 @@ $\frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_5} \cdot \f
 
 $\frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_5} \cdot \frac{1}{\frac{R_6}{R5} \cdot (s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1)}$
 
-Het resultaat: $H(s) = \frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} \cdot \frac{1}{s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1}$
+**Het resultaat:** $H(s) = \frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} \cdot \frac{1}{s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1}$
 
 ### 3. Vergelijk transfer functie met de algemene
 
@@ -132,48 +100,99 @@ Algemene vorm LDL filter: $H(s) = K\frac{1}{(\frac{s}{\omega_n})^2+\frac{1}{Q}\c
 + $\frac{1}{\omega_n^2} = \frac{C_1C_2R_1R_2R_5}{R_6}$
 + $\frac{1}{Q\omega_n}=C_2R_2 \cdot \frac{R_3}{R_4+R_3} \cdot \frac{R_5+R_6}{R_6}$
 
-### 3. Pole-zero plot
+### 4. Pole-zero plot
 
 + Geen zeros
 + Wel polen, namelijk $s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1 = 0$
 
+ToDo: Grafiek
 
+### 5. Frequentiegedrag
 
+\begin{tikzpicture}
+\begin{axis}[
+width=\textwidth,
+height=\axisdefaultheight,
+title={Asymptotisch Bodediagram},
+xlabel={Frequentie [Hz]},
+ylabel={Versterking [dB]},
+xmode=log,
+ymajorgrids=true,
+xmajorgrids=true, 
+xminorgrids=true,
+grid style=dashed,
+xmin=100, xmax=10000,
+ymin=-40, ymax=20,
+ytick={0,6,-34},
+]
 
+\addplot
+table {
+100 6
+1000 6
+10000 -34
+};
+\node[color=blue] at (axis cs: 2000,-15) {$-40dB/dec$};
+\node[color=blue,anchor=south] at (axis cs: 200,6) {$K = 2 = 6dB$};
+\draw[thick,red,->] (axis cs: 1000,6) -- (axis cs: 1000,15);
+\node[color=red,anchor=west] at (axis cs: 1000,10) {$Q = 4$};
 
+\end{axis}
+\end{tikzpicture}
 
+De lijn van $-40dB/dec$, het beginpunt bij $10 kHz,-34dB$, en het filtertype (LDF) laat toe $f_n$ te berekenen. We moeten $40dB$ zakken van $6dB$ to $-34dB$, dit is dus 1 decade, ofwel $f_n = 1000 Hz$.
 
+ToDo: Bespreek ligging polen
 
+### 5. Tijdsgedrag
 
+ToDo: Dit heel deel
+ToDo: Grafiek
+ToDo: Bespreek ligging polen
 
+## Synthese
 
-
-
+### Ontwerpvergelijkingen
 
 Kies:
-
 + $C_2 = c^{te} = 1$
   Kies $C_2$ omdat van $C_1$ makkelijker een ontwerpvergelijking te vinden is.
 + $R = R_1 = R_2 = R_3 = R_4 = R_6$
   $R_5$ variabel omdat die enkel in tellers zit. Dit maakt ontwerpvergelijkingen makkelijker.
 
-Dit maakt dan
+De transfer functie wordt dan:
 
-+ $K = \frac{R+R_5}{2R}$
-+ $\frac{1}{\omega_n^2} = C_1C_2RR_5$
-+ $\frac{1}{Q\omega_n}=\frac{C_2(R+R_5)}{2}$
+$H(s) = \frac{R+R_5}{2R} \cdot \frac{1}{s^2RC_1C_2R_5 +  s \cdot (R+R_5) \cdot \frac{C_2}{2} + 1}$
 
-Transfer functie met componenten: $H(s) = \frac{R+R_5}{2R} \cdot \frac{1}{s^2C_1C_2RR_5+s\frac{C2(R+R_5)}{2}+1}$
+Met de vergelijkingen van uit de transfer functie:
++ $K=\frac{R_4}{R_3+R_4} \cdot \frac{R_5+R_6}{R_6}$
++ $\frac{1}{\omega_n^2} = \frac{C_1C_2R_1R_2R_5}{R_6}$
++ $\frac{1}{Q\omega_n}=C_2R_2 \cdot \frac{R_3}{R_4+R_3} \cdot \frac{R_5+R_6}{R_6}$
 
-## Synthese
+Geeft:
 
-### 1. Ontwerpvergelijkingen
++ $K = \frac{R}{2R} \cdot \frac{R_5+R}{R} = \frac{R_5+R}{2R} \Rightarrow R_5 + R = 2KR \Rightarrow R_5 = R(2K-1)$
++ $\frac{1}{\omega_n^2} = \frac{C_1C_2R^2R_5}{R} = C_1C_2RR_5 \Rightarrow C_1 = \frac{1}{\omega_n^2C_2R_5R}$
++ $\frac{1}{Q\omega_n}=C_2R_2 \cdot \frac{R_3}{R_4+R_3} \cdot \frac{R_5+R_6}{R_6} = C_2R \cdot \frac{R}{2R} \cdot \frac{R_5+R}{R} = \frac{C_2(R_5+R)}{2} \Rightarrow Q = \frac{2}{\omega_nC_22KR} \Rightarrow R = \frac{1}{Q\omega_nC_2K}$
 
-+ $K = \frac{R+R_5}{2R} \Rightarrow R + R_5 = 2RK$ and $\frac{1}{Q\omega_n} = \frac{C_2(R+R_5)}{2} = C_2RK \Rightarrow R = \frac{1}{C_2KQ\omega_n}$ 
-+ $R+R_5 = 2KR \Rightarrow R_5 = (2K-1)R \Rightarrow R_5 = \frac{2K-1}{C_2KQ\omega_n}$
-+ $\omega_n^2=\frac{1}{C_1C_2RR_5} \Rightarrow C_1 = \frac{1}{C_2RR_5\omega_n^2}$
+De ontwerpvergelijkingen:
 
-### 2. Impedantieschaling
++ $R = \frac{1}{Q\omega_nC_2K}$
++ $R_5 = R(2K-1)$
++ $C_1 = \frac{1}{\omega_n^2C_2R_5R}$
 
-Schalingsfactor: 10^6^
+#### Impedantieschaling
 
+Waarden zonder impedantieschaling:
+
++ $R = 0.0000198943...\Omega$
++ $R_5 = 0.0000596831...\Omega$
++ $C_1 = 21.33...F$
++ $C_2 = 1F$
+
+Met schalingsfactor $10^9$:
+
++ $R=R*ISF = 19894.36... = 19.89 k\Omega$
++ $R_5 = R_5 * ISF = 59683.10... = 59.68 k\Omega$
++ $C_1 = \frac{C_1}{ISF} = 0.000000021333... = 21.33 nF$
++ $C_2 = \frac{C_2}{ISF} = 0.000000001 = 1nF$
