@@ -39,10 +39,6 @@ figure(3)%,clf;
 hold on;
 step(H);
 
-figure(4)%,clf;
-hold on;
-impulse(H)
-
 % SYNTHESIS
 % =========
 
@@ -83,4 +79,4 @@ hold on;
 bode(H, '-b');   % H based specification
 bode(Hc,':r');   % H based on components
 
-tilefigs
+%tilefigs

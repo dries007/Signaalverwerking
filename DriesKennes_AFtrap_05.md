@@ -5,8 +5,10 @@ date: \today
 papersize: A4
 geometry: margin=2cm
 header-includes:
+  - \usepackage[utf8]{inputenc}
   - \usepackage{pgfplots}
-  - \usepgfplotslibrary{polar}
+  - \usepackage{siunitx}
+  - \pgfplotsset{compat=1.5.1}
 ---
 # Opdracht 2A: Analyse v.e. actieve filtertrap
 
@@ -104,21 +106,47 @@ Algemene vorm LDL filter: $H(s) = K\frac{1}{(\frac{s}{\omega_n})^2+\frac{1}{Q}\c
 ### 4. Pole-zero plot
 
 + Geen zeros
-+ Wel polen, namelijk $s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1 = 0$
++ Wel polen, namelijk:
 
+$\frac{s^2}{\omega_n^2} + \frac{s}{Q\omega_n} + 1 = 0$
+
+$\frac{s^2}{(2000\pi)^2} + \frac{s}{4\cdot2000\pi} + 1 = 0$
+
+$\frac{s^2}{(2000\pi)^2} + \frac{s}{8000\pi} + 1 = 0$
+
+2 complexe polen:
+
+$250\pi(-1+3\sqrt{7}i)$ en $250\pi(-1-3\sqrt{7}i)$
+
+of ongeveer
+
+$-785+6234i = 6283 \angle \ang{97}$ en $-785-6234i = 6283 \angle \ang{-97}$
+
+\begin{center}
 \begin{tikzpicture}
-\begin{polaraxis}[
+\begin{axis}[
 title={Pole-Zero Plot},
-ytick={1},
-yticklabels={},
-every outer x axis line/.append style={transparent},
-every outer y axis line/.append style={transparent},
+axis x line=center,
+axis y line=center,
+yticklabels={,,},
+xticklabels={,,},
+xlabel=$\Re$,
+ylabel=$\Im$,
+xmin=-6300,
+xmax=6300,
+ymin=-6300,
+ymax=6300,
+axis equal image
 ]
-\node[color=blue] at (0,0) {$-40dB/dec$};
-\end{polaraxis}
+\addplot[
+only marks,
+mark=x,
+mark size=5pt,
+] coordinates {(-785,-6234) (-785,+6234)};
+\draw [dashed] (axis cs:0,0) circle [radius=6283];
+\end{axis}
 \end{tikzpicture}
-
-ToDo: Grafiek
+\end{center}
 
 ### 5. Frequentiegedrag
 
@@ -153,14 +181,16 @@ table {
 \end{axis}
 \end{tikzpicture}
 
-De lijn van $-40dB/dec$, het beginpunt bij $10 kHz,-34dB$, en het filtertype (LDF) laat toe $f_n$ te berekenen. We moeten $40dB$ zakken van $6dB$ to $-34dB$, dit is dus 1 decade, ofwel $f_n = 1000 Hz$.
+De lijn van $-40dB/dec$, het beginpunt bij $10 kHz,-34dB$, en het filtertype (LDF) laat toe $f_n$ te berekenen. We moeten $40dB$ zakken van $6dB$ to $-34dB$, dit is dus 1 decade, ofwel $f_n = 1 kHz$.
 
 ToDo: Bespreek ligging polen
 
 ### 5. Tijdsgedrag
 
 ToDo: Dit heel deel
+
 ToDo: Grafiek
+
 ToDo: Bespreek ligging polen
 
 ## Synthese
@@ -209,3 +239,108 @@ Met schalingsfactor $10^9$:
 + $R_5 = R_5 * ISF = 59683.10... = 59.68 k\Omega$
 + $C_1 = \frac{C_1}{ISF} = 0.000000021333... = 21.33 nF$
 + $C_2 = \frac{C_2}{ISF} = 0.000000001 = 1nF$
+
+## Simulatie op basis van de transferfunctie
+
+### Mathlab code
+
+```matlab
+% Zonder tekenen van figuren
+
+fn = 1000 % 1kHz
+K  = 2    % 6dB
+Q  = 4
+
+wn = 2*pi*fn
+
+H_N = K * [0     0        1]
+H_D =     [1/wn^2  1/(Q*wn) 1]
+
+H = tf(H_N, H_D) % H_N / H_D
+
+C2 = 1
+R=1/(C2*K*Q*wn)
+R5=R*(2*K-1)
+C1=1/(wn^2*C2*R5*R)
+
+ISF= 10^9
+C1 = C1/ISF
+C2 = C2/ISF
+R  = R*ISF
+R5 = R5*ISF
+
+% CHECK 1: fn and Qz (specification vs components)
+
+Kc  = (R+R5)/(2*R)
+wnc = 1/sqrt(C1*C2*R*R5)
+fnc = wnc/(2*pi)
+Qc  = 2/(C2*wn*(R5+R))
+
+% CHECK 2: transfer function (specification vs components)
+%       s^2        s^1         s^0
+H_Nc = ((R5+R)/(2*R)) * [0          0           1]
+H_Dc =                  [C1*C2*R*R5 C2*(R5+R)/2 1]
+
+Hc = tf(H_Nc, H_Dc)
+```
+
+Output:
+
+```text
+fn = 1000
+K = 2
+Q = 4
+wn = 6.2832e+03
+H_N = 0         0         2
+H_D = 0.0000    0.0000    1.0000
+H =
+                 2
+  -------------------------------
+  2.533e-08 s^2 + 3.979e-05 s + 1
+
+Continuous-time transfer function.
+
+C2 = 1
+R = 1.9894e-05
+R5 = 5.9683e-05
+C1 = 21.3333
+
+ISF = 1.0000e+09
+C1 = 2.1333e-08
+C2 = 1.0000e-09
+R = 1.9894e+04
+R5 = 5.9683e+04
+
+Kc = 2
+wnc = 6.2832e+03
+fnc = 1.0000e+03
+Qc = 4
+
+H_Nc =	0         0         2
+H_Dc =	0.0000    0.0000    1.0000
+Hc =
+                 2
+  -------------------------------
+  2.533e-08 s^2 + 3.979e-05 s + 1
+ 
+Continuous-time transfer function.
+```
+
+### Pole Zero plot
+
+![Pole zero plot](assets/pz_map.png){height=250px}
+
+### Bode plot
+
+![Bode Plot](assets/bode.png){height=250px}
+
+Door de dubbele pool is er maar 1 knik in de (anymptotosche) grafiek, daar gaat de helling van $0$ naar $-40dB/dec$.
+
+### Stapresponsie
+
+![Stapresponsie](assets/step_resp.png){height=250px}
+
+
+
+
+
