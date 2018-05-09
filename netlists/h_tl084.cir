@@ -1,0 +1,19 @@
+* Z:\home\dries\Projects\SignaalVerwerking\tl084.asc
+R3 N006 vin 19894
+R1 N002 N005 19894
+R2 N004 N003 19894
+C2 Vout N004 1n
+C1 N003 N002 21.33n
+R6 N005 N001 19894
+R4 N003 N006 19894
+R5 Vout N001 59683
+V1 vin 0 AC 1
+XU1 N006 N001 vp vn N005 TL084
+XU2 0 N002 vp vn N003 TL084
+XU3 0 N004 vp vn Vout TL084
+V2 vp 0 15
+V3 0 vn 15
+.ac dec 100 100 1000000
+.lib Z:\home\dries\Projects\SignaalVerwerking\docs\OpampModel\OPAMP_PSPICE\TL084.cir
+.backanno
+.end

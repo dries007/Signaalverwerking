@@ -1,0 +1,14 @@
+*
+* ideal opamp model (pure VCVS)
+*
+* Adc   = 200000  (amplification at DC)
+* Rin   = infinite MOhm  (imput impedance) 
+* Rout  = 0 Ohm  (output impedance)
+
+* CONNECTIONS:      NON-INVERTING INPUT
+*                   | INVERTING INPUT
+*                   | | OUTPUT
+*                   | | |
+.SUBCKT opampIdeal  1 2 3
+E1    3  0    1 2   200000
+.ENDS
