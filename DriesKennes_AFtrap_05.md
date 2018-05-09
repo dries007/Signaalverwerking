@@ -240,9 +240,9 @@ Met schalingsfactor $10^9$:
 + $C_1 = \frac{C_1}{ISF} = 0.000000021333... = 21.33 nF$
 + $C_2 = \frac{C_2}{ISF} = 0.000000001 = 1nF$
 
-## Simulatie op basis van de transferfunctie
+## Simulatie op basis van de transferfunctie (Matlab)
 
-### Mathlab code
+### Matlab code
 
 ```matlab
 % Zonder tekenen van figuren
@@ -328,7 +328,9 @@ Continuous-time transfer function.
 
 ### Pole Zero plot
 
-![Pole zero plot](assets/pz_map.png){height=250px}
+![Pole zero plot](assets/pz_map.png){height=350px}
+
+Todo: uitleg
 
 ### Bode plot
 
@@ -340,7 +342,80 @@ Door de dubbele pool is er maar 1 knik in de (anymptotosche) grafiek, daar gaat 
 
 ![Stapresponsie](assets/step_resp.png){height=250px}
 
+Todo: uitleg
 
+## Simulatie op basis van de componenten (SPICE)
 
+### Ideaal
 
+```
+* Z:\home\dries\Projects\SignaalVerwerking\ideaal.asc
+R3 N006 vin 19894
+R1 N002 N005 19894
+R2 N004 N003 19894
+C2 Vout N004 1n
+C1 N003 N002 21.33n
+R6 N005 N001 19894
+R4 N003 N006 19894
+R5 Vout N001 59683
+V1 vin 0 AC 1
+XU4 N001 N006 N005 opampIdeal
+XU5 N002 0 N003 opampIdeal
+XU6 N004 0 Vout opampIdeal
+.ac dec 100 100 1MEG
+.lib Z:\home\dries\Projects\SignaalVerwerking\docs\OpampModel\OPAMP_PSPICE\opampIdeal.cir
+.backanno
+.end
+```
 
+![Ideaal Bode Plot](assets/H_ideaal.png){height=250px}
+
+#### VCVS
+
+```
+* Z:\home\dries\Projects\SignaalVerwerking\vcvs.asc
+R3 N006 vin 19894
+R1 N002 N005 19894
+R2 N004 N003 19894
+C2 Vout N004 1n
+C1 N003 N002 21.33n
+R6 N005 N001 19894
+R4 N003 N006 19894
+R5 Vout N001 59683
+V1 vin 0 AC 1
+XU1 N001 N006 N005 opamp84
+XU2 N002 0 N003 opamp84
+XU3 N004 0 Vout opamp84
+.ac dec 100 100 1MEG
+.lib Z:\home\dries\Projects\SignaalVerwerking\docs\OpampModel\OPAMP_PSPICE\opamp84.cir
+.backanno
+.end
+```
+
+![VCVS Bode Plot](assets/H_vcvs.png){height=250px}
+
+#### tl084
+
+```
+* Z:\home\dries\Projects\SignaalVerwerking\tl084.asc
+R3 N006 vin 19894
+R1 N002 N005 19894
+R2 N004 N003 19894
+C2 Vout N004 1n
+C1 N003 N002 21.33n
+R6 N005 N001 19894
+R4 N003 N006 19894
+R5 Vout N001 59683
+V1 vin 0 AC 1
+XU1 N006 N001 vp vn N005 TL084
+XU2 0 N002 vp vn N003 TL084
+XU3 0 N004 vp vn Vout TL084
+V2 vp 0 15
+V3 0 vn 15
+.ac dec 100 100 1000000
+.lib Z:\home\dries\Projects\SignaalVerwerking\docs\OpampModel\OPAMP_PSPICE\TL084.cir
+.backanno
+.end
+```
+
+![TL084 Bode Plot](assets/H_tl084.png){height=250px}
