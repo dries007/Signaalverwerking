@@ -9,6 +9,9 @@ header-includes:
   - \usepackage{pgfplots}
   - \usepackage{siunitx}
   - \pgfplotsset{compat=1.5.1}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+  - \floatplacement{table}{H}
 ---
 # Opdracht 2A: Analyse v.e. actieve filtertrap
 
@@ -182,10 +185,11 @@ table {
 \end{tikzpicture}
 
 De lijn van $-40dB/dec$, het beginpunt bij $10 kHz,-34dB$, en het filtertype (LDF) laat toe $f_n$ te berekenen. We moeten $40dB$ zakken van $6dB$ to $-34dB$, dit is dus 1 decade, ofwel $f_n = 1 kHz$.
-
-ToDo: Bespreek ligging polen
+Door de dubbele pool is er maar 1 knik in de grafiek, daar gaat de helling van $0$ naar $-40dB/dec$.
 
 ### 5. Tijdsgedrag
+
+
 
 ToDo: Dit heel deel
 
@@ -245,8 +249,7 @@ Met schalingsfactor $10^9$:
 ### Matlab code
 
 ```matlab
-% Zonder tekenen van figuren
-
+% Gegevens
 fn = 1000 % 1kHz
 K  = 2    % 6dB
 Q  = 4
@@ -255,33 +258,50 @@ wn = 2*pi*fn
 
 H_N = K * [0     0        1]
 H_D =     [1/wn^2  1/(Q*wn) 1]
-
 H = tf(H_N, H_D) % H_N / H_D
 
+% Figuren uit gegevens
+figure(1);
+hold on;
+pzmap(H);
+figure(2);
+hold on;
+bode(H);
+figure(3);
+hold on;
+step(H);
+
+% Ontwerpvergelijkingen
 C2 = 1
 R=1/(C2*K*Q*wn)
 R5=R*(2*K-1)
 C1=1/(wn^2*C2*R5*R)
 
+% Impedantieschaling
 ISF= 10^9
 C1 = C1/ISF
 C2 = C2/ISF
 R  = R*ISF
 R5 = R5*ISF
 
-% CHECK 1: fn and Qz (specification vs components)
-
+% K, wn, fn, en Q uit componenten
 Kc  = (R+R5)/(2*R)
 wnc = 1/sqrt(C1*C2*R*R5)
 fnc = wnc/(2*pi)
 Qc  = 2/(C2*wn*(R5+R))
 
-% CHECK 2: transfer function (specification vs components)
-%       s^2        s^1         s^0
+% H uit componenten
 H_Nc = ((R5+R)/(2*R)) * [0          0           1]
 H_Dc =                  [C1*C2*R*R5 C2*(R5+R)/2 1]
-
 Hc = tf(H_Nc, H_Dc)
+
+% Figuren uit componentwaarden
+figure(1);
+pzmap(Hc);
+figure(2);
+bode(Hc);
+figure(3);
+step(Hc);
 ```
 
 Output:
@@ -330,8 +350,6 @@ Continuous-time transfer function.
 
 ![Pole zero plot](assets/pz_map.png){height=350px}
 
-Todo: uitleg
-
 ### Bode plot
 
 ![Bode Plot](assets/bode.png){height=250px}
@@ -342,14 +360,15 @@ Door de dubbele pool is er maar 1 knik in de (anymptotosche) grafiek, daar gaat 
 
 ![Stapresponsie](assets/step_resp.png){height=250px}
 
-Todo: uitleg
-
 ## Simulatie op basis van de componenten (SPICE)
+
+**Note**: Ik gebruik LTspice, dus de numering van de nodes is niet systematish. Ze zijn aangeduid op het schema uit de opgave in lichtgrijs.
 
 ### Ideaal
 
 ```
-* Z:\home\dries\Projects\SignaalVerwerking\ideaal.asc
+* H Ideaal
+.inc opampIdeal.cir
 R3 N006 vin 19894
 R1 N002 N005 19894
 R2 N004 N003 19894
@@ -363,8 +382,7 @@ XU4 N001 N006 N005 opampIdeal
 XU5 N002 0 N003 opampIdeal
 XU6 N004 0 Vout opampIdeal
 .ac dec 100 100 1MEG
-.lib Z:\home\dries\Projects\SignaalVerwerking\docs\OpampModel\OPAMP_PSPICE\opampIdeal.cir
-.backanno
+.probe
 .end
 ```
 
@@ -373,7 +391,8 @@ XU6 N004 0 Vout opampIdeal
 #### VCVS
 
 ```
-* Z:\home\dries\Projects\SignaalVerwerking\vcvs.asc
+* H VCVS
+.inc opamp84.cir
 R3 N006 vin 19894
 R1 N002 N005 19894
 R2 N004 N003 19894
@@ -387,8 +406,7 @@ XU1 N001 N006 N005 opamp84
 XU2 N002 0 N003 opamp84
 XU3 N004 0 Vout opamp84
 .ac dec 100 100 1MEG
-.lib Z:\home\dries\Projects\SignaalVerwerking\docs\OpampModel\OPAMP_PSPICE\opamp84.cir
-.backanno
+.probe
 .end
 ```
 
@@ -397,7 +415,8 @@ XU3 N004 0 Vout opamp84
 #### tl084
 
 ```
-* Z:\home\dries\Projects\SignaalVerwerking\tl084.asc
+* H TL084
+.inc TL084.cir
 R3 N006 vin 19894
 R1 N002 N005 19894
 R2 N004 N003 19894
@@ -413,9 +432,80 @@ XU3 0 N004 vp vn Vout TL084
 V2 vp 0 15
 V3 0 vn 15
 .ac dec 100 100 1000000
-.lib Z:\home\dries\Projects\SignaalVerwerking\docs\OpampModel\OPAMP_PSPICE\TL084.cir
-.backanno
+.probe
 .end
 ```
 
 ![TL084 Bode Plot](assets/H_tl084.png){height=250px}
+
+#### Monte Carlo analyse R5% - C20%
+
+```
+* H TL084, MC 5-20
+.inc tl084.cir
+.model rmod res(r = 1 DEV/GAUSS 5%)
+.model cmod cap(c = 1 DEV/GAUSS 20%)
+R3 6 vin rmod 19894
+R1 2 5 rmod 19894
+R2 4 3 rmod 19894
+C2 Vout 4 cmod 1n
+C1 3 2 cmod 21.33n
+R6 5 1 rmod 19894
+R4 3 6 rmod 19894
+R5 Vout 1 rmod 59683
+V1 vin 0 AC 1
+V2 vp 0 15
+V3 0 vn 15
+XU4 1 6 vp vn 5 tl084
+XU5 2 0 vp vn 3 tl084
+XU6 4 0 vp vn Vout tl084
+.ac dec 100 100 1MEG
+.mc 10 ac V(V1) ymax list output all
+.probe
+.end
+```
+
+![Monte Carlo analyse 5%](assets/AF_MC5_tl084.png)
+
+#### Monte Carlo analyse 1%
+
+```
+* H TL084, MC 1
+.inc tl084.cir
+.model rmod res(r = 1 DEV/GAUSS 1%)
+.model cmod cap(c = 1 DEV/GAUSS 1%)
+R3 6 vin rmod 19894
+R1 2 5 rmod 19894
+R2 4 3 rmod 19894
+C2 Vout 4 cmod 1n
+C1 3 2 cmod 21.33n
+R6 5 1 rmod 19894
+R4 3 6 rmod 19894
+R5 Vout 1 rmod 59683
+V1 vin 0 AC 1
+V2 vp 0 15
+V3 0 vn 15
+XU4 1 6 vp vn 5 tl084
+XU5 2 0 vp vn 3 tl084
+XU6 4 0 vp vn Vout tl084
+.ac dec 100 100 1MEG
+.mc 10 ac V(V1) ymax list output all
+.probe
+.end
+```
+
+![Monte Carlo analyse 1%](assets/AF_MC1_tl084.png)
+
+### Ingangsimpedantie
+
+![Cartesiaanse Ingangsimpedantie](assets/zplot.png)
+
+Omdat er $\ang{180}$ fasedraaing zit op de ingangsstroom is de reele as (links) negatief en lijkt deze ondersteboven te staan. De reele impedantiecomonent *daalt* rond de kantelfrequentie. De maximale ingangsimpedantie is $40k\Omega$, de minimale $20k\Omega$.
+
+![Polaire Ingangsimpedantie](assets/zplotComplex.png)
+
+### Staprespontie
+
+![Staprespontie](assets/step.png)
+
+De staprespontie berekend via SPICE is vrijwel identiek aan die berekend via Matlab.

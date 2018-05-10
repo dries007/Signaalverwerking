@@ -1,0 +1,20 @@
+* H ideaal
+.inc opampIdeal.cir
+.model rmod res(r = 1 DEV/GAUSS 5%)
+.model cmod cap(c = 1 DEV/GAUSS 20%)
+R3 6 vin rmod 19894
+R1 2 5 rmod 19894
+R2 4 3 rmod 19894
+C2 Vout 4 cmod 1n
+C1 3 2 cmod 21.33n
+R6 5 1 rmod 19894
+R4 3 6 rmod 19894
+R5 Vout 1 rmod 59683
+V1 vin 0 AC 1
+XU4 1 6 5 opampIdeal
+XU5 2 0 3 opampIdeal
+XU6 4 0 Vout opampIdeal
+.ac dec 100 100 1MEG
+.mc 10 ac V(V1) ymax list output all
+.probe					  
+.end

@@ -1,0 +1,4 @@
+Circuit: * Z:\home\dries\Projects\Signaalverwerking\netlists\Schema.asc
+
+Fatal Error: Unknown subcircuit called in:
+   xu1 n001 n006 n005 opamp aol=100k gbw=10meg

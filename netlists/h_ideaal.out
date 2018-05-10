@@ -1,0 +1,699 @@
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     CIRCUIT DESCRIPTION
+
+
+******************************************************************************
+
+
+
+.inc opampIdeal.cir
+
+**** INCLUDING opampIdeal.cir ****
+*
+* ideal opamp model (pure VCVS)
+*
+* Adc   = 200000  (amplification at DC)
+* Rin   = infinite MOhm  (imput impedance) 
+* Rout  = 0 Ohm  (output impedance)
+
+* CONNECTIONS:      NON-INVERTING INPUT
+*                   | INVERTING INPUT
+*                   | | OUTPUT
+*                   | | |
+.SUBCKT opampIdeal  1 2 3
+E1    3  0    1 2   200000
+.ENDS
+
+**** RESUMING h_ideaal.cir ****
+.model rmod res(r = 1 DEV/GAUSS 5%)
+.model cmod cap(c = 1 DEV/GAUSS 20%)
+R3 6 vin rmod 19894
+R1 2 5 rmod 19894
+R2 4 3 rmod 19894
+C2 Vout 4 cmod 1n
+C1 3 2 cmod 21.33n
+R6 5 1 rmod 19894
+R4 3 6 rmod 19894
+R5 Vout 1 rmod 59683
+V1 vin 0 AC 1
+XU4 1 6 5 opampIdeal
+XU5 2 0 3 opampIdeal
+XU6 4 0 Vout opampIdeal
+.ac dec 100 100 1MEG
+.mc 10 ac V(V1) ymax list output all
+.probe                                    
+.end
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     Resistor MODEL PARAMETERS
+
+
+******************************************************************************
+
+
+
+
+               rmod            
+           R    1            
+
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     Capacitor MODEL PARAMETERS
+
+
+******************************************************************************
+
+
+
+
+               cmod            
+           C    1            
+
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO NOMINAL  
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      1.0000E+00      1.0000E+00      1.0000E+00
+                      R6              R4              R5              
+              R      1.0000E+00      1.0000E+00      1.0000E+00
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      1.0000E+00      1.0000E+00
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO NOMINAL  
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    2
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      9.7595E-01      1.0261E+00      1.0467E+00
+                      R6              R4              R5              
+              R      1.0447E+00      9.4437E-01      1.0063E+00
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      9.2159E-01      8.4434E-01
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    2
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    3
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      9.8750E-01      1.0388E+00      9.3095E-01
+                      R6              R4              R5              
+              R      1.0259E+00      1.0389E+00      1.0498E+00
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      1.4661E+00      1.1075E+00
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    3
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    4
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      9.5097E-01      1.0105E+00      1.0664E+00
+                      R6              R4              R5              
+              R      1.0180E+00      9.8239E-01      9.8633E-01
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      9.4369E-01      1.1262E+00
+
+**** 05/09/18 17:03:37 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    4
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    5
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      9.0736E-01      1.0673E+00      9.6002E-01
+                      R6              R4              R5              
+              R      1.0070E+00      1.0143E+00      9.8236E-01
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      8.1273E-01      7.8816E-01
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    5
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    6
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      9.9576E-01      9.6641E-01      1.0196E+00
+                      R6              R4              R5              
+              R      1.0205E+00      9.5528E-01      1.0497E+00
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      1.0533E+00      9.8533E-01
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    6
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    7
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      9.7533E-01      1.0548E+00      9.4790E-01
+                      R6              R4              R5              
+              R      9.7905E-01      9.3269E-01      1.0890E+00
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      1.0531E+00      1.1378E+00
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    7
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    8
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      1.0730E+00      1.0645E+00      1.0469E+00
+                      R6              R4              R5              
+              R      1.0898E+00      1.0055E+00      9.7590E-01
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      8.2513E-01      9.0425E-01
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    8
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    9
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      1.0290E+00      9.9316E-01      1.0305E+00
+                      R6              R4              R5              
+              R      9.2906E-01      9.4940E-01      9.6363E-01
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      8.8227E-01      9.8353E-01
+
+**** 05/09/18 17:03:38 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS    9
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:39 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     UPDATED MODEL PARAMETERS         TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS   10
+
+******************************************************************************
+
+
+
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING rmod
+                       R3              R1              R2              
+              R      1.0813E+00      1.0030E+00      9.4488E-01
+                      R6              R4              R5              
+              R      1.0580E+00      1.0677E+00      9.7089E-01
+
+
+ **** CURRENT MODEL PARAMETERS FOR DEVICES REFERENCING cmod
+                       C2              C1              
+              C      7.3841E-01      1.0526E+00
+
+**** 05/09/18 17:03:39 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SMALL SIGNAL BIAS SOLUTION       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO PASS   10
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(    1)    0.0000  (    2)    0.0000  (    3)    0.0000  (    4)    0.0000      
+
+(    5)    0.0000  (    6)    0.0000  (  vin)    0.0000  ( Vout)    0.0000  
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V1           0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+**** 05/09/18 17:03:39 *********** Evaluation PSpice (Nov 1999) **************
+
+ * H ideaal
+
+
+ ****     SORTED DEVIATIONS OF V(V1)       TEMPERATURE =   27.000 DEG C
+
+                      MONTE CARLO SUMMARY
+
+******************************************************************************
+
+
+
+
+
+Mean Deviation =    0     
+Sigma          =    0     
+
+ RUN                    MAX DEVIATION FROM NOMINAL
+
+Pass    2               0     
+
+Pass    3               0     
+
+Pass    4               0     
+
+Pass    5               0     
+
+Pass    6               0     
+
+Pass    7               0     
+
+Pass    8               0     
+
+Pass    9               0     
+
+Pass   10               0     
+
+
+
+          JOB CONCLUDED
+
+          TOTAL JOB TIME            1.73
+
