@@ -194,11 +194,58 @@ Door de dubbele pool is er maar 1 knik in de grafiek, daar gaat de helling van $
 
 ### 6. Tijdsgedrag
 
+\begin{tikzpicture}
+\begin{axis}[
+width=\textwidth,
+height=\axisdefaultheight,
+title={Step Response},
+xlabel={Time [ms])},
+ylabel={Amplitude [V]},
+xlabel={t [ms]},
+ylabel={A [V]},
+ymajorgrids=true,
+xmajorgrids=true, 
+xminorgrids=true,
+grid style=dashed,
+xmin=0, xmax=7,
+ymin=0, ymax=4,
+]
+
+\addplot[smooth, 
+black,
+thick,
+mark=none,
+domain=0:7,
+samples=100]
+{2*(1-(1/sqrt(1-0.125^2))*exp(-0.125*2*pi*x)*cos(deg(2*pi*sqrt(1-0.125^2)*x)))};
+
+\addplot[smooth, 
+red,
+mark=none,
+domain=0:7,
+samples=100]
+{2*(1-(1/sqrt(1-0.125^2))*exp(-0.125*2*pi*x))};
+\addplot[smooth, 
+red,
+mark=none,
+domain=0:7,
+samples=100]
+{2*(1+(1/sqrt(1-0.125^2))*exp(-0.125*2*pi*x))};
+
+\end{axis}
+\end{tikzpicture}
+
+Het tijdsgedrag van een filter wordt bepaald door de transfer functie vanuit het $s$ domein om te zetten naar het $t$ domein met een inverse Laplace transformatie.
+
+$H(t) = K(1-\frac{1}{\sqrt{1-\zeta^2}}e^{-\zeta\omega_0t} cos(\omega_0\sqrt{1-\zeta^2}t))$
+
+met $K = 2$ en $\zeta = \frac{1}{2Q} = \frac{1}{2 \cdot 4} = 0.125$ en $\omega = 2 \pi \cdot f_n = 2000\pi$
+
+$H(t) \approx 2-2e^{-250 \pi \cdot t} cos(1984 \pi \cdot t)$
 
 
-ToDo: Dit heel deel
 
-ToDo: Grafiek
+
 
 ToDo: Bespreek ligging polen
 
