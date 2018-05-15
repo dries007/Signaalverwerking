@@ -10,8 +10,20 @@ header-includes:
   - \usepackage{siunitx}
   - \pgfplotsset{compat=1.5.1}
   - \usepackage{float}
+  - \usepackage{wrapfig}
   - \floatplacement{figure}{H}
   - \floatplacement{table}{H}
+  - |
+    \usepackage{listings}
+    \lstset {
+      basicstyle=\footnotesize,
+      numbers=left,
+      stepnumber=1,
+      showstringspaces=false,
+      tabsize=1,
+      breaklines=true,
+      breakatwhitespace=false,
+    }
 ---
 # Opdracht 2A: Analyse v.e. actieve filtertrap
 
@@ -27,27 +39,21 @@ header-includes:
 
 ## Analyse
 
-### 1. Bepaal de DC- en HF-weergave
-
-#### DC
+### DC & HF
 
 Bij DC zijn condensatoren open kring, dus wordt de versterking bepaald door de feedback weerstanden $R_4$, $R_5$, en $R_6$. Dit is dus een vaste versterking. $|H(DC)| = A$.
 
-![Schema met alle condensatoren open kring.](assets/AF_05_LP_KHNni_DC.png){height=150px}
+Bij HF ($f=\infty$) zijn de condensatoren kortsluitingen, dus wordt het signaal volledig onderdrukt door het ontbreken van de feedback lussen $C_1$ en $C_2$. $|H(HF)| = -\infty dB$
 
-#### HF
+![Schema met alle condensatoren open kring. (DC)](assets/AF_05_LP_KHNni_DC.png){height=150px}
 
-Bij HF ($f=\infty$) zijn de condensatoren kortsluitingen, dus wordt het signaal volledig onderdrukt door de feedback lussen $C_1$ en $C_2$. $|H(HF)| = -\infty dB$
-
-![Schema met alle condensatoren kortgesloten.](assets/AF_05_LP_KHNni_HF.png){height=150px}
-
-### 2. Bepaal de transferfunctie
+### Bepaal de transferfunctie
 
 Ik heb de transfer functie uitgerekend door het schema op te splitsen in twee integrators en de eerste opamp.
 
 #### De integrators
 
-![Deel van het schema met de integrators.](assets/integrators.png){height=150px}
+![Deel van het schema met de integrators.](assets/integrators.png){height=100px}
 
 De algemene formule voor een integrator is $v_o=\frac{-v_1}{sRC}$.
 
@@ -57,9 +63,9 @@ Gecombineerd: $v_{out}=\frac{v_4}{s^2R_1C_1R_2C_2}$ of $v_4 = s^2R_1R_2C_1C_2v_{
 
 #### Superpositie
 
-##### Geval 1: $v_{in}$, $v_{out} = v_5 = 0$
+![Superpositie schemas](assets/superpositie.png){height=150px}
 
-![Superpositie schema geval 1](assets/superpositie1.png){height=150px}
+##### Geval 1: $v_{in}$, $v_{out} = v_5 = 0$
 
 De opamp is nu een niet inverterende versterker.
 
@@ -69,8 +75,6 @@ $v_1 = v_{in} \cdot \frac{R_4}{R_3+R_4} \Rightarrow v_4 = v_{in} \cdot \frac{R_4
 
 ##### Geval 2: $v_5$, $v_{out} = v_{in} = 0$
 
-![Superpositie schema geval 2](assets/superpositie2.png){height=150px}
-
 De opamp is nu een niet inverterende versterker.
 
 $v_4 = v_1 \cdot (1+\frac{R_6}{R_5})$
@@ -78,8 +82,6 @@ $v_4 = v_1 \cdot (1+\frac{R_6}{R_5})$
 $v_1 = v_5 \cdot \frac{R_3}{R_3+R_4} \Rightarrow v_4 = v_5 \cdot \frac{R_3}{R_3+R_4} \cdot (1+\frac{R_6}{R_5}) = v_5 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_5}$
 
 ##### Geval 3: $v_{out}$, $v_5 = v_{in} = 0$
-
-![Superpositie schema geval 3](assets/superpositie3.png){height=150px}
 
 De opamp is nu een inverterende versterker.
 
@@ -101,20 +103,43 @@ $\frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_5} \cdot \f
 
 $\frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_5} \cdot \frac{1}{\frac{R_6}{R5} \cdot (s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1)}$
 
-**Het resultaat:** $H(s) = \frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} \cdot \frac{1}{s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1}$
+**Het resultaat:**
 
-### 3. Vergelijk transfer functie met de algemene
+$H(s) = \frac{v_{out}}{v_{in}} = \frac{R_4}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} \cdot \frac{1}{s^2 \cdot \frac{R_1R_2C_1C_2R_5}{R_6} + sR_2C_2 \cdot \frac{R_3}{R_3+R_4} \cdot \frac{R_6+R_5}{R_6} + 1}$
 
-Algemene vorm LDL filter: $H(s) = K\frac{1}{(\frac{s}{\omega_n})^2+\frac{1}{Q}\cdot(\frac{s}{\omega_n})+1}$
+### Pole-zero plot
 
-+ $K=\frac{R_4}{R_3+R_4} \cdot \frac{R_5+R_6}{R_6}$
-+ $\frac{1}{\omega_n^2} = \frac{C_1C_2R_1R_2R_5}{R_6}$
-+ $\frac{1}{Q\omega_n}=C_2R_2 \cdot \frac{R_3}{R_4+R_3} \cdot \frac{R_5+R_6}{R_6}$
+\begin{wrapfigure}[0]{r}{200pt}
+\vspace{-50pt}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+title={(Schets) Pole-Zero Plot},
+axis x line=center,
+axis y line=center,
+yticklabels={,,},
+xticklabels={,,},
+xlabel=$\Re$,
+ylabel=$\Im$,
+xmin=-6300,
+xmax=6300,
+ymin=-6300,
+ymax=6300,
+axis equal image,
+height=200pt,
+width=200pt,
+]
+\addplot[
+only marks,
+mark=x,
+mark size=5pt,
+] coordinates {(-785,-6234) (-785,+6234)};
+\draw [dashed] (axis cs:0,0) circle [radius=6283];
+\end{axis}
+\end{tikzpicture}
+\end{wrapfigure}
 
-### 4. Pole-zero plot
-
-+ Geen zeros
-+ Wel polen, namelijk:
+Geen zeros, wel polen, namelijk:
 
 $\frac{s^2}{\omega_n^2} + \frac{s}{Q\omega_n} + 1 = 0$
 
@@ -130,33 +155,7 @@ of ongeveer
 
 $-785+6234i = 6283 \angle \ang{97}$ en $-785-6234i = 6283 \angle \ang{-97}$
 
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-title={Pole-Zero Plot},
-axis x line=center,
-axis y line=center,
-yticklabels={,,},
-xticklabels={,,},
-xlabel=$\Re$,
-ylabel=$\Im$,
-xmin=-6300,
-xmax=6300,
-ymin=-6300,
-ymax=6300,
-axis equal image
-]
-\addplot[
-only marks,
-mark=x,
-mark size=5pt,
-] coordinates {(-785,-6234) (-785,+6234)};
-\draw [dashed] (axis cs:0,0) circle [radius=6283];
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
-### 5. Frequentiegedrag
+### Frequentiegedrag
 
 \begin{tikzpicture}
 \begin{axis}[
@@ -192,7 +191,7 @@ table {
 De lijn van $-40dB/dec$, het beginpunt bij $10 kHz,-34dB$, en het filtertype (LDF) laat toe $f_n$ te berekenen. We moeten $40dB$ zakken van $6dB$ to $-34dB$, dit is dus 1 decade, ofwel $f_n = 1 kHz$.
 Door de dubbele pool is er maar 1 knik in de grafiek, daar gaat de helling van $0$ naar $-40dB/dec$.
 
-### 6. Tijdsgedrag
+### Tijdsgedrag
 
 \begin{tikzpicture}
 \begin{axis}[
@@ -241,15 +240,19 @@ $H(t) = K(1-\frac{1}{\sqrt{1-\zeta^2}}e^{-\zeta\omega_0t} cos(\omega_0\sqrt{1-\z
 
 met $K = 2$ en $\zeta = \frac{1}{2Q} = \frac{1}{2 \cdot 4} = 0.125$ en $\omega = 2 \pi \cdot f_n = 2000\pi$
 
-$H(t) \approx 2-2e^{-250 \pi \cdot t} cos(1984 \pi \cdot t)$
+$H(t) \approx 2-2e^{-250 \pi \cdot t} cos(2000 \pi \cdot t)$
 
-
-
-
-
-ToDo: Bespreek ligging polen
+Deze afronding is nauwkeurig genoeg om de functie te tekenen.
 
 ## Synthese
+
+### Vergelijk transfer functie met de algemene vorm
+
+Algemene vorm LDL filter: $H(s) = K\frac{1}{(\frac{s}{\omega_n})^2+\frac{1}{Q}\cdot(\frac{s}{\omega_n})+1}$
+
++ $K=\frac{R_4}{R_3+R_4} \cdot \frac{R_5+R_6}{R_6}$
++ $\frac{1}{\omega_n^2} = \frac{C_1C_2R_1R_2R_5}{R_6}$
++ $\frac{1}{Q\omega_n}=C_2R_2 \cdot \frac{R_3}{R_4+R_3} \cdot \frac{R_5+R_6}{R_6}$
 
 ### Ontwerpvergelijkingen
 
@@ -303,105 +306,7 @@ Met schalingsfactor $10^9$:
 
 ## Simulatie op basis van de transferfunctie (Matlab)
 
-### Matlab code
-
-```matlab
-% Gegevens
-fn = 1000 % 1kHz
-K  = 2    % 6dB
-Q  = 4
-
-wn = 2*pi*fn
-
-H_N = K * [0     0        1]
-H_D =     [1/wn^2  1/(Q*wn) 1]
-H = tf(H_N, H_D) % H_N / H_D
-
-% Figuren uit gegevens
-figure(1);
-hold on;
-pzmap(H);
-figure(2);
-hold on;
-bode(H);
-figure(3);
-hold on;
-step(H);
-
-% Ontwerpvergelijkingen
-C2 = 1
-R=1/(C2*K*Q*wn)
-R5=R*(2*K-1)
-C1=1/(wn^2*C2*R5*R)
-
-% Impedantieschaling
-ISF= 10^9
-C1 = C1/ISF
-C2 = C2/ISF
-R  = R*ISF
-R5 = R5*ISF
-
-% K, wn, fn, en Q uit componenten
-Kc  = (R+R5)/(2*R)
-wnc = 1/sqrt(C1*C2*R*R5)
-fnc = wnc/(2*pi)
-Qc  = 2/(C2*wn*(R5+R))
-
-% H uit componenten
-H_Nc = ((R5+R)/(2*R)) * [0          0           1]
-H_Dc =                  [C1*C2*R*R5 C2*(R5+R)/2 1]
-Hc = tf(H_Nc, H_Dc)
-
-% Figuren uit componentwaarden
-figure(1);
-pzmap(Hc);
-figure(2);
-bode(Hc);
-figure(3);
-step(Hc);
-```
-
-### Matlab Output
-
-```text
-fn = 1000
-K = 2
-Q = 4
-wn = 6.2832e+03
-H_N = 0         0         2
-H_D = 0.0000    0.0000    1.0000
-H =
-                 2
-  -------------------------------
-  2.533e-08 s^2 + 3.979e-05 s + 1
-
-Continuous-time transfer function.
-
-C2 = 1
-R = 1.9894e-05
-R5 = 5.9683e-05
-C1 = 21.3333
-
-ISF = 1.0000e+09
-C1 = 2.1333e-08
-C2 = 1.0000e-09
-R = 1.9894e+04
-R5 = 5.9683e+04
-
-Kc = 2
-wnc = 6.2832e+03
-fnc = 1.0000e+03
-Qc = 4
-
-H_Nc =	0         0         2
-H_Dc =	0.0000    0.0000    1.0000
-Hc =
-                 2
-  -------------------------------
-  2.533e-08 s^2 + 3.979e-05 s + 1
- 
-Continuous-time transfer function.
-```
+\lstinputlisting[language=Matlab]{ActieveFiltertrap.m}
 
 ### Pole Zero plot
 
@@ -409,7 +314,7 @@ Continuous-time transfer function.
 
 ### Bode plot
 
-![Bode Plot](assets/bode.png){height=250px}
+![Bode Plot](assets/bode.png){height=450px}
 
 Door de dubbele pool is er maar 1 knik in de (anymptotosche) grafiek, daar gaat de helling van $0$ naar $-40dB/dec$.
 
@@ -419,150 +324,52 @@ Door de dubbele pool is er maar 1 knik in de (anymptotosche) grafiek, daar gaat 
 
 ## Simulatie op basis van de componenten (SPICE)
 
-**Note**: Ik gebruik LTspice, dus de numering van de nodes is niet systematish. Ze zijn aangeduid op het schema uit de opgave in lichtgrijs.
+De numering van de nodes is niet systematish. Ze zijn aangeduid op het schema uit de opgave in lichtgrijs.
 
 ### Ideaal
 
-```
-* H Ideaal
-.inc opampIdeal.cir
-R3 N006 vin 19894
-R1 N002 N005 19894
-R2 N004 N003 19894
-C2 Vout N004 1n
-C1 N003 N002 21.33n
-R6 N005 N001 19894
-R4 N003 N006 19894
-R5 Vout N001 59683
-V1 vin 0 AC 1
-XU4 N001 N006 N005 opampIdeal
-XU5 N002 0 N003 opampIdeal
-XU6 N004 0 Vout opampIdeal
-.ac dec 100 100 1MEG
-.probe
-.end
-```
+\lstinputlisting{spice.cir}
 
 ![Ideaal Bode Plot](assets/H_ideaal.png){height=250px}
 
 #### VCVS
 
-```
-* H VCVS
-.inc opamp84.cir
-R3 N006 vin 19894
-R1 N002 N005 19894
-R2 N004 N003 19894
-C2 Vout N004 1n
-C1 N003 N002 21.33n
-R6 N005 N001 19894
-R4 N003 N006 19894
-R5 Vout N001 59683
-V1 vin 0 AC 1
-XU1 N001 N006 N005 opamp84
-XU2 N002 0 N003 opamp84
-XU3 N004 0 Vout opamp84
-.ac dec 100 100 1MEG
-.probe
-.end
-```
+Netlist vrijwel identiek aan het ideaal geval, enkel het opamp model is aangepast.
 
 ![VCVS Bode Plot](assets/H_vcvs.png){height=250px}
 
 #### tl084
 
-```
-* H TL084
-.inc TL084.cir
-R3 N006 vin 19894
-R1 N002 N005 19894
-R2 N004 N003 19894
-C2 Vout N004 1n
-C1 N003 N002 21.33n
-R6 N005 N001 19894
-R4 N003 N006 19894
-R5 Vout N001 59683
-V1 vin 0 AC 1
-XU1 N006 N001 vp vn N005 TL084
-XU2 0 N002 vp vn N003 TL084
-XU3 0 N004 vp vn Vout TL084
-V2 vp 0 15
-V3 0 vn 15
-.ac dec 100 100 1000000
-.probe
-.end
-```
+Netlist vrijwel identiek aan het ideaal geval, het opamp model is aangepast en extra voeding ($\pm15V$) toegevoegd voor de opamps.
 
 ![TL084 Bode Plot](assets/H_tl084.png){height=250px}
 
 #### Monte Carlo analyse R5% - C20%
 
-```
-* H TL084, MC 5-20
-.inc tl084.cir
-.model rmod res(r = 1 DEV/GAUSS 5%)
-.model cmod cap(c = 1 DEV/GAUSS 20%)
-R3 6 vin rmod 19894
-R1 2 5 rmod 19894
-R2 4 3 rmod 19894
-C2 Vout 4 cmod 1n
-C1 3 2 cmod 21.33n
-R6 5 1 rmod 19894
-R4 3 6 rmod 19894
-R5 Vout 1 rmod 59683
-V1 vin 0 AC 1
-V2 vp 0 15
-V3 0 vn 15
-XU4 1 6 vp vn 5 tl084
-XU5 2 0 vp vn 3 tl084
-XU6 4 0 vp vn Vout tl084
-.ac dec 100 100 1MEG
-.mc 10 ac V(V1) ymax list output all
-.probe
-.end
-```
+Bij een Monte Carlo analyse worden de weerstanden en condensatoren vervangen door een model dat rekening houd met de toleranties van de componenten.
 
-![Monte Carlo analyse 5%](assets/AF_MC5_tl084.png)
+![Monte Carlo analyse 5%](assets/AF_MC5_tl084.png){height=350px}
+
+Hier is duidelijk op te zien dat de kantelfrequentie een stukje kan verschuiven, ongeveer $100Hz$ naar beneden en $300Hz$ naar boven.
 
 #### Monte Carlo analyse 1%
 
-```
-* H TL084, MC 1
-.inc tl084.cir
-.model rmod res(r = 1 DEV/GAUSS 1%)
-.model cmod cap(c = 1 DEV/GAUSS 1%)
-R3 6 vin rmod 19894
-R1 2 5 rmod 19894
-R2 4 3 rmod 19894
-C2 Vout 4 cmod 1n
-C1 3 2 cmod 21.33n
-R6 5 1 rmod 19894
-R4 3 6 rmod 19894
-R5 Vout 1 rmod 59683
-V1 vin 0 AC 1
-V2 vp 0 15
-V3 0 vn 15
-XU4 1 6 vp vn 5 tl084
-XU5 2 0 vp vn 3 tl084
-XU6 4 0 vp vn Vout tl084
-.ac dec 100 100 1MEG
-.mc 10 ac V(V1) ymax list output all
-.probe
-.end
-```
+Code bijna gelijk aan de vorige, alleen 1% i.p.v. 5% en 20%.
 
-![Monte Carlo analyse 1%](assets/AF_MC1_tl084.png)
+![Monte Carlo analyse 1%](assets/AF_MC1_tl084.png){height=350px}
+
+Hier is duidelijk veel minder verschil. M.a.w. als de filter nauwkeurig moet zijn, is investeren in 1% componenten geen slecht idee.
 
 ### Ingangsimpedantie
 
-![Cartesiaanse Ingangsimpedantie](assets/zplot.png)
+![Cartesiaanse Ingangsimpedantie](assets/zplot.png){height=200px}
 
 Omdat er $\ang{180}$ fasedraaing zit op de ingangsstroom is de reele as (links) negatief en lijkt deze ondersteboven te staan. De reele impedantiecomonent *daalt* rond de kantelfrequentie. De maximale ingangsimpedantie is $40k\Omega$, de minimale $20k\Omega$.
 
-![Polaire Ingangsimpedantie](assets/zplotComplex.png)
+![Polaire Ingangsimpedantie](assets/zplotComplex.png){height=200px}
 
 ### Staprespontie
 
-![Staprespontie](assets/step.png)
+![Staprespontie](assets/step.png){height=200px}
 
 De staprespontie berekend via SPICE is vrijwel identiek aan die berekend via Matlab.
