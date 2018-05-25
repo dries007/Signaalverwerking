@@ -72,7 +72,7 @@ figure(3); pzmap(H2);
 C1 = 1                                % OUTPUT: C1 = 1
 R = 1/(wn2*C1)                % OUTPUT: R = 8.6869e-05
 R1 = R/K                            % OUTPUT: R1 = 6.1426e-05
-R2 = Q2e/(wn2*C1)         % OUTPUT: R2 = 2.6648e-04
+R2 = Q2/(wn2*C1)         % OUTPUT: R2 = 2.6648e-04
 
 %Realistische waarden
 ISF = 10^8;                         

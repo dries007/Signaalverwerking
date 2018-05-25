@@ -74,20 +74,35 @@ MATLAB code staat bij in het eerste deel, samen met de uitkomesten van de bewerk
 
 ## SPICE
 
+Dit is (zoals in de opgave) enkel de 2^e^ orde trap!
+
 ### Netlist
 
 \lstinputlisting{bode.cir}
 
+### Bode plot
+
 ![Bode Plot](assets/spice_bode.png){height=250px}
 
-==TODO==
+Dit is vrijwel identiek aan de Matlab 
+
+### Monte Carlo analyse
+
 ![Monte Carlo analyse](assets/spice_mc.png){height=250px}
+
+Hier is bijna geen verschil. (Met 1% R en C.) 
+
+### Ingangsimpedantie
 
 ![Ingangsimpedantie](assets/spice_zin.png){height=250px}
 
 Er is bijna geen variatie in de ingangsimpedantie.
 
-==TODO==
-![Uitgangsimpedantie](assets/spice_zuit.png){height=250px}
+### Uitgangsimpedantie
 
+![Uitgangsimpedantie](assets/spice_zout.png){height=250px}
+
+### Staprespontie
+
+![Staprespontie](assets/spice_stap.png){height=250px}
 

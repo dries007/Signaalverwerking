@@ -1,0 +1,41 @@
+* Ideaal schema
+
+.inc opampIdeal.cir * Voor ideaal
+
+*.inc opamp84.cir * Voor VCVS
+
+*.inc TL084.cir * Voor TL084
+
+*.model rmod res(r = 1 DEV/GAUSS 5%) * Voor MC analyse
+*.model cmod cap(c = 1 DEV/GAUSS 20%) * Voor MC analyse
+
+R3 N006 vin 19894
+R1 N002 N005 19894
+R2 N004 N003 19894
+C2 Vout N004 1n
+C1 N003 N002 21.33n
+R6 N005 N001 19894
+R4 N003 N006 19894
+R5 Vout N001 59683
+
+V1 vin 0 AC 1 * Voor Bode / Zin
+
+V2 vp 0 15  * Voor TL084
+V3 0 vn 15  * Voor TL084
+
+XU4 N001 N006 N005 opampIdeal * Voor ideaal
+XU5 N002 0 N003 opampIdeal * Voor ideaal
+XU6 N004 0 Vout opampIdeal * Voor ideaal
+
+XU4 1 6 5 opamp84 * Voor VCVS
+XU5 2 0 3 opamp84 * Voor VCVS
+XU6 4 0 Vout opamp84 * Voor VCVS
+
+* XU4 1 6 vp vn 5 tl084 * Voor TL084
+* XU5 2 0 vp vn 3 tl084 * Voor TL084
+* XU6 4 0 vp vn Vout tl084 * Voor TL084
+
+.ac dec 100 100 1MEG * Voor bode / Zin
+* .mc 10 ac V(V1) ymax list output all * Voor MC analyse
+.probe
+.end
